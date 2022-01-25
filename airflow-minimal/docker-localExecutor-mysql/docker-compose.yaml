@@ -26,7 +26,7 @@ x-airflow-common:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__CORE__SQL_ALCHEMY_CONN: mysql+mysqldb://airflow:airflow@mysql:3306/airflow
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
     AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE: 3600
   volumes:
     - ./dags:/opt/airflow/dags

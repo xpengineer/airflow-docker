@@ -37,15 +37,18 @@ def transform_data(exec_date):
         file_date_path = f"{date.strftime('%Y-%m-%d')}/{date.hour}"
 
         booking = pd.read_csv(f"{dag_path}/raw_data/{file_date_path}/booking.csv", low_memory=False)
+        print(f"========= booking.shape[0]: {booking.shape[0]}")
         client = pd.read_csv(f"{dag_path}/raw_data/client.csv", low_memory=False)
         hotel = pd.read_csv(f"{dag_path}/raw_data/hotel.csv", low_memory=False)
 
         # merge booking with client
         data = pd.merge(booking, client, on='client_id')
+        print(f"========= data.shape[0] after merging w/ client: {data.shape[0]}")
         data.rename(columns={'name': 'client_name', 'type': 'client_type'}, inplace=True)
 
         # merge booking, client & hotel
         data = pd.merge(data, hotel, on='hotel_id')
+        print(f"========= data.shape[0] after merging w/ hotel: {data.shape[0]}")
         data.rename(columns={'name': 'hotel_name'}, inplace=True)
 
         # make date format consistent
