@@ -35,6 +35,7 @@ def transform_data(exec_date):
         print(f"Ingesting data for date: {exec_date}")
         date = datetime.strptime(exec_date, '%Y-%m-%d %H')
         file_date_path = f"{date.strftime('%Y-%m-%d')}/{date.hour}"
+        print(f"dag_path: {dag_path}, file_date_path: {file_date_path}")
 
         booking = pd.read_csv(f"{dag_path}/raw_data/{file_date_path}/booking.csv", low_memory=False)
         print(f"========= booking.shape[0]: {booking.shape[0]}")
@@ -116,14 +117,16 @@ ingestion_dag = DAG(
 task_1 = PythonOperator(
     task_id='transform_data',
     python_callable=transform_data,
-    op_args=["{{ ds }} {{ execution_date.hour }}"],
+    # op_args=["{{ ds }} {{ execution_date.hour }}"],
+    op_args=["{{ ds }} 11"],
     dag=ingestion_dag,
 )
 
 task_2 = PythonOperator(
     task_id='load_data',
     python_callable=load_data,
-    op_args=["{{ ds }} {{ execution_date.hour }}"],
+    # op_args=["{{ ds }} {{ execution_date.hour }}"],
+    op_args=["{{ ds }} 11"],
     dag=ingestion_dag,
 )
 

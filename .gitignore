@@ -3,3 +3,6 @@
 venv
 .pytest_cache
 *.pyc
+processed_data/
+db/
+logs/
