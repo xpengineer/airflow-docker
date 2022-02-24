@@ -78,8 +78,33 @@ t22 = PythonOperator(
     dag=xp_dag,
 )
 
+t3 = PythonOperator(
+    task_id='t3',
+    op_args=["t3"],
+    python_callable=xp_func,
+    dag=xp_dag,
+)
+
+t4 = PythonOperator(
+    task_id='t4',
+    op_args=["t4"],
+    python_callable=xp_func,
+    dag=xp_dag,
+)
+
 
 # chain(t1, [t11, t12])
 # chain(t2, [t21, t22])
-chain(t0, t1, [t11, t12])
-chain(t0, t2, [t21, t22])
+
+chain(t1, [t11, t12], t3, t4)
+chain(t0, t2, [t21, t22], t3)
+
+# chain(t0, t1, [t11, t12])
+# chain(t0, t2, [t21, t22])
+#
+# t11.set_downstream(t3)
+# t12.set_downstream(t3)
+# t21.set_downstream(t3)
+# t22.set_downstream(t3)
+# t3.set_upstream(t11)
+# t3.set_upstream(t12)

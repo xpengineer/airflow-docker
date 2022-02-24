@@ -75,7 +75,15 @@ t22 = PythonOperator(
     dag=xp_dag,
 )
 
+t3 = PythonOperator(
+    task_id='t3',
+    op_args=["t3"],
+    python_callable=xp_func,
+    dag=xp_dag,
+)
 
 t0 >> [t1, t2]
 t1 >> [t11, t12]
 t2 >> [t21, t22]
+
+[t11, t12, t21, t22] >> t3
